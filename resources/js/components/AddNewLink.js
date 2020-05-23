@@ -4,8 +4,8 @@ import axios from 'axios';
 const AddNewLink = ({ addLink }) => {
   const [formData, setFormData] = useState({
     url: "",
-    errorMessage: "",
   });
+  const [error, setError] = useState("");
 
   const handleChange = evt => {
     setFormData({
@@ -18,23 +18,26 @@ const AddNewLink = ({ addLink }) => {
     try {
       evt.preventDefault();
       const { data } = await axios.post('/api/links', formData);
-      addLink(data);
+      if (data.status !== 200) {
+	setError(data.message);
+	setTimeout(() => {
+	  setError("");
+	}, 5000);
+      } else {
+	addLink(data);
+      }
     } catch (err) {
       console.error(err);
     }
   }
     
-    
   return (
     <div className="form">
       <form onSubmit={handleSubmit}>
-	<label htmlFor="url">
-	  URL:
-	</label>
 	<input
 	name="url"
 	type="url"
-	placeholder="Link"
+	placeholder="e.g. https://wikipedia.org"
 	onChange={handleChange}
 	/>
 	<button>
