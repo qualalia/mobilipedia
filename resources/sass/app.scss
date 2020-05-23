@@ -12,21 +12,21 @@ h1 {
 }
 
 #home {
-    margin: 0 2rem;
+    margin: 0 auto;
     width: 95vw;
 }
 
 #links-container {
-    padding: 0 15rem;
     overflow-y: auto;
 }
 
 ul {
     list-style: none;
     display: flex;
-    justify-content: center space-between;
+    justify-content: center;
     align-content: center;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 ul li::before {
@@ -41,8 +41,8 @@ li span {
 .link-item {
     margin: 1rem;
     padding: 2rem 2rem;
-    width: 30vw;
-    background-color: rgba(255, 200, 100, 0.1);
+    width: 35vw;
+    border: 3px solid rgba(0,0,0,0.3);
 }
 
 form {
