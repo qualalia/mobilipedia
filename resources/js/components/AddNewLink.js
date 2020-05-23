@@ -18,7 +18,7 @@ const AddNewLink = ({ addLink }) => {
     try {
       evt.preventDefault();
       const { data } = await axios.post('/api/links', formData);
-      if (data.status !== 200) {
+      if (!data.url) {
 	setError(data.message);
 	setTimeout(() => {
 	  setError("");
@@ -30,21 +30,19 @@ const AddNewLink = ({ addLink }) => {
       console.error(err);
     }
   }
-    
+  
   return (
-    <div className="form">
-      <form onSubmit={handleSubmit}>
-	<input
+    <form onSubmit={handleSubmit}>
+      <input
 	name="url"
 	type="url"
 	placeholder="e.g. https://wikipedia.org"
 	onChange={handleChange}
-	/>
-	<button>
-	  Add
-	</button>
-      </form>
-    </div>
+      />
+      <button>
+	Add
+      </button>
+    </form>
   )
 };
 
