@@ -19,10 +19,20 @@ const LinksContainer = () => {
     setLinks([...links, link]);
   }
 
+  const deleteLink = async linkId => {
+    const { data } = await axios.delete(`/api/links/${linkId}`);
+    setLinks(links.filter(link => link.id !== linkId));
+  }
+
   return (
     <div id="links-container">
-      <AddNewLink addLink={addLink} />
-      <LinksList links={links} />
+      <AddNewLink
+	addLink={addLink}
+      />
+      <LinksList
+	links={links}
+	handleDelete={deleteLink}
+      />
     </div>
   )
 };
@@ -30,7 +40,7 @@ const LinksContainer = () => {
 export default LinksContainer;
 
 
-const LinksList = ({ links }) => {
+const LinksList = ({ links, handleDelete }) => {
   return (
     <>
       {links.length === 0
@@ -40,6 +50,7 @@ const LinksList = ({ links }) => {
 	  <SingleLink
 	    key={`link${link.id}`}
 	    link={link}
+	    handleDelete={handleDelete}
 	  />
 	))}
       </ul>
@@ -48,14 +59,12 @@ const LinksList = ({ links }) => {
   )
 };
 
-const SingleLink = ({ link }) => {
-  const handleDelete = () => {}
-  
+const SingleLink = ({ link, handleDelete }) => {  
   return (
     <li
       className="link-item"
     >
-      <span onClick={handleDelete}>
+      <span onClick={() => handleDelete(link.id)}>
 	❌  {/* X */}
       </span>
       <a href={link.url}>
