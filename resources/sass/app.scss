@@ -1,0 +1,44 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+h1 {
+    text-align: center;
+}
+
+#home {
+    margin: 0 2rem;
+    position: absolute;
+    left: calc(50vw - 15rem);
+    width: 80vw;
+}
+
+#links-container {
+    margin: 2rem 0;
+}
+
+ul {
+    list-style: none;
+}
+
+ul li::before {
+    content: "\200B";
+}
+
+li span {
+    margin: 1rem;
+    cursor: pointer;
+}
+
+.link-item {
+    padding: 0.5rem 0;
+}
+
+form {
+    display: flex;
+}
