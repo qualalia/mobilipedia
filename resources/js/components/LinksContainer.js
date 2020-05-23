@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { AddNewLink } from '../components';
+import { makeEmbedLinkYT } from '../utils.js';
 
 const LinksContainer = () => {
   const [links, setLinks] = useState([]);
@@ -59,7 +60,12 @@ const LinksList = ({ links, handleDelete }) => {
   )
 };
 
-const SingleLink = ({ link, handleDelete }) => {  
+const SingleLink = ({ link, handleDelete }) => {
+  let url;
+  // TODO: generalize to "any" video url
+  if (link.url.includes("youtube")) {
+    url = makeEmbedLinkYT(link.url)
+  }
   return (
     <li
       className="link-item"
@@ -67,6 +73,11 @@ const SingleLink = ({ link, handleDelete }) => {
       <span onClick={() => handleDelete(link.id)}>
 	❌  {/* X */}
       </span>
+      <iframe
+	src={url}
+      allowFullScreen
+	width={100 + "%"}
+      />
       <a href={link.url}>
 	{link.url}
       </a>
