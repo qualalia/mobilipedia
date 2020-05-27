@@ -1,4 +1,6 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import store from '../store';
 import ReactDOM from 'react-dom';
 import { Router, useHistory } from 'react-router-dom';
 import history from '../history.js';
@@ -14,9 +16,11 @@ const App = () => {
 };
 
 ReactDOM.render(
-  <Router history={history}>
-    <App />
-  </Router>,
+  <Provider store={store}>
+    <Router history={history}>
+      <App />
+    </Router>
+  </Provider>,
   document.getElementById("app")
 );
 
