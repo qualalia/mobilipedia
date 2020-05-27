@@ -1,11 +1,24 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { addNewLink, addLinkError } from '../store';
 
-const AddNewLink = ({ addLink }) => {
+const AddNewLink = () => {
   const [formData, setFormData] = useState({
     url: "",
   });
-  const [error, setError] = useState("");
+  const errorMsg = useSelector(state => state.error.addLink);
+  const [errorToDisplay, setError] = useState("");
+  const dispatch = useDispatch();
+
+  if (errorMsg && errorMsg.message) {
+    setTimeout(
+      () => {
+	dispatch(addLinkError({ message: "" }))
+      },
+      2000
+    )
+  }
 
   const handleChange = evt => {
     setFormData({
@@ -14,34 +27,39 @@ const AddNewLink = ({ addLink }) => {
     });
   }
   
-  const handleSubmit = async evt => {
-    try {
-      evt.preventDefault();
-      const { data } = await axios.post('/api/links', formData);
-      if (!data.url) {
-	setError(data.message);
-	setTimeout(() => {
-	  setError("");
-	}, 5000);
-      } else {
-	addLink(data);
-      }
-    } catch (err) {
-      console.error(err);
-    }
+  const handleSubmit = evt => {
+    evt.preventDefault();
+    dispatch(addNewLink(formData));
+    /*      const { data } = await axios.post('/api/links', formData);
+       if (!data.url) {
+       setError(data.message);
+       setTimeout(() => {
+       setError("");
+       }, 5000);
+       } else {
+       addLink(data);
+       }
+       } catch (err) {
+       console.error(err);
+       }*/
   }
-  
+ 
   return (
     <form onSubmit={handleSubmit}>
       <input
-	name="url"
-	type="url"
-	placeholder="e.g. https://wikipedia.org"
-	onChange={handleChange}
+      name="url"
+      type="url"
+      placeholder="e.g. https://wikipedia.org"
+      onChange={handleChange}
       />
       <button>
 	Add
       </button>
+      <div
+	className="form-error-msg"
+      >
+	{errorMsg && errorMsg.message}
+      </div>
     </form>
   )
 };
