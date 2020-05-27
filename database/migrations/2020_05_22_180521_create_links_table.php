@@ -16,6 +16,8 @@ class CreateLinksTable extends Migration
     Schema::create('links', function (Blueprint $table) {
       $table->id();
       $table->string('url')->unique();
+      $table->text('description')->nullable($value = true);
+      $table->text('tags')->default('uncategorized,');
       $table->timestamps();
     });
   }
