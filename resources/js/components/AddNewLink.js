@@ -56,7 +56,7 @@ const AddNewLink = () => {
 	Add
       </button>
       <div
-	className="form-error-msg"
+	id="form-error-msg"
       >
 	{errorMsg && errorMsg.message}
       </div>
