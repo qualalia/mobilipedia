@@ -1,86 +1,43 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { AddNewLink } from '../components';
+import { AddNewLink, LinksList } from '../components';
 import { makeEmbedLinkYT } from '../utils.js';
+import { fetchLinks } from '../store';
 
 const LinksContainer = () => {
-  const [links, setLinks] = useState([]);
-
-  const fetchLinks = async () => {
+//  const [links, setLinks] = useState([]);
+  const dispatch = useDispatch();
+  const links = useSelector(state => state.links);
+  const error = useSelector(state => state.error);
+  
+/*  const fetchLinks = async () => {
     const { data } = await axios.get('/api/links');
     setLinks(data);
     return data;
-  }
+  }*/
 
   useEffect(() => {
-    fetchLinks();
+    dispatch(fetchLinks())
   }, []);
 
-  const addLink = link => {
+/*  const addLink = link => {
     setLinks([...links, link]);
-  }
+  }*/
 
-  const deleteLink = async linkId => {
+/*  const deleteLink = async linkId => {
     const { data } = await axios.delete(`/api/links/${linkId}`);
     setLinks(links.filter(link => link.id !== linkId));
-  }
+  }*/
 
   return (
     <div id="links-container">
-      <AddNewLink
-	addLink={addLink}
-      />
+      <AddNewLink />
       <LinksList
 	links={links}
-	handleDelete={deleteLink}
       />
     </div>
   )
 };
 
 export default LinksContainer;
-
-
-const LinksList = ({ links, handleDelete }) => {
-  return (
-    <>
-      {links.length === 0
-      ? <h2>Loading...</h2>
-      : <ul>
-	{links.length && links.map(link => (
-	  <SingleLink
-	    key={`link${link.id}`}
-	    link={link}
-	    handleDelete={handleDelete}
-	  />
-	))}
-      </ul>
-      }
-    </>
-  )
-};
-
-const SingleLink = ({ link, handleDelete }) => {
-  let url;
-  // TODO: generalize to "any" video url
-  if (link.url.includes("youtube")) {
-    url = makeEmbedLinkYT(link.url)
-  }
-  return (
-    <li
-      className="link-item"
-    >
-      <span onClick={() => handleDelete(link.id)}>
-	❌  {/* X */}
-      </span>
-      <iframe
-	src={url}
-      allowFullScreen
-	width={100 + "%"}
-      />
-      <a href={link.url}>
-	{link.url}
-      </a>
-    </li>
-  )
-};
